@@ -12,28 +12,42 @@ public class Main {
     private static final String LETTER_GRADE_D = "D";
     private static final String LETTER_GRADE_E = "E";
     private static final String LETTER_GRADE_F = "F";
+    private static final int STUDENT_MARKS_ARRAY_LENGTH = 5;
+
 
     public static void main(String[] args) {
 
         // create empty array
-        int[][] studentMarks = new int[5][5];
+        int[][] studentMarks = new int[STUDENT_MARKS_ARRAY_LENGTH][STUDENT_MARKS_ARRAY_LENGTH];
 
         // initialize random marks for every student
         initializeRandomMarks(studentMarks);
 
-        for (int student = 0; student < studentMarks.length; student++) {
-            double average = calculateAverage(studentMarks[student]);
+        //calculate average marks
+        double[] averageMarks = calculateAverageMarks(studentMarks);
+
+        //print result
+        for (int student = 0; student < averageMarks.length; student++) {
+            double average = averageMarks[student];
             printStudentAverage(average, student + 1, calculateLetterGrade(average));
         }
     }
 
+    // calculates average marks for all students, returns array of average marks
+    private static double[] calculateAverageMarks(int[][] studentMarks) {
+        double[] result = new double[studentMarks.length];
+        for (int student = 0; student < studentMarks.length; student++) {
+            result[student] = calculateAverage(studentMarks[student]);
+        }
+        return result;
+    }
 
     // method to initialize array
     public static void initializeRandomMarks(int[][] studentMarks) {
 
         for (int row = 0; row < studentMarks.length; row++) {
             for (int column = 0; column < studentMarks[row].length; column++) {
-                studentMarks[row][column] = random.nextInt(10) + 1;
+                studentMarks[row][column] = random.nextInt(10)+1;
             }
         }
     }
@@ -56,17 +70,27 @@ public class Main {
         System.out.println("Average for student " + studentNumber + ": " + average + " | " + "Letter grade : " + letter);
     }
 
+    // returns grade letter depending on average mark
     public static String calculateLetterGrade(double average) {
-        if (average == 10 ) {
-            return LETTER_GRADE_A;
-        } else if (average >= 8) {
-            return LETTER_GRADE_B;
-        } else if (average >= 6) {
-            return LETTER_GRADE_C;
-        } else if (average >= 4) {
-            return LETTER_GRADE_D;
-        } else if (average >= 2) {
+
+       if (average <=1) {
+           return LETTER_GRADE_F;
+       }
+        else if (average <=3) {
             return LETTER_GRADE_E;
-        } else return LETTER_GRADE_F;
+        }
+        else if (average <=5) {
+            return LETTER_GRADE_D;
+        }
+        else if (average <=7) {
+            return LETTER_GRADE_C;
+        }
+        else if (average <=9) {
+            return LETTER_GRADE_B;
+        }
+        else if (average >9) {
+           return LETTER_GRADE_A;
+        }
+        return LETTER_GRADE_F;
     }
 }
